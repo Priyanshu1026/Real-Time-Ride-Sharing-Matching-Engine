@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\sagar\OneDrive\Documents\Real-Time-Ride-Sharing-Matching-Engine\build\CMakeFiles\a494d94e4601ac0854adcc919d1f0981\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{14978AA6-32A9-3797-BAA1-5D6A7AEA432F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

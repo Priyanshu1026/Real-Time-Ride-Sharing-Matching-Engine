@@ -1,0 +1,24 @@
+--- Simulation Started ---
+[Time 0] Processing Rider 100 ... MATCHED: Rider 100 with Driver 1
+   -> Trip Distance: 200.0 units. Duration: 20000ms.
+[Time 0] Processing Rider 101 ... MATCHED: Rider 101 with Driver 2
+   -> Trip Distance: 200.0 units. Duration: 20000ms.
+[Time 1000] Processing Rider 102 ... NO MATCH. Retrying in 5000ms...
+[Time 6000] Processing Rider 102 (Retry #1) ... NO MATCH. Retrying in 5000ms...
+[Time 11000] Processing Rider 102 (Retry #2) ... NO MATCH. Retrying in 5000ms...
+[Time 16000] Processing Rider 102 (Retry #3) ... NO MATCH. Max retries reached. Request Cancelled.
+[Time 20000] Driver 1 is free again at (200, 0)
+[Time 20000] Driver 2 is free again at (0, 200)
+[Time 25000] Processing Rider 103 ... NO MATCH. Retrying in 5000ms...
+[Time 30000] Processing Rider 103 (Retry #1) ... NO MATCH. Retrying in 5000ms...
+[Time 35000] Processing Rider 103 (Retry #2) ... NO MATCH. Retrying in 5000ms...
+[Time 40000] Processing Rider 103 (Retry #3) ... NO MATCH. Max retries reached. Request Cancelled.
+
+========================================
+       SIMULATION REPORT CARD           
+========================================
+ Total Requests  : 4
+ Total Matches   : 2
+ Failed/Expired  : 2
+ Match Rate      : 50.0%
+========================================
