@@ -1,0 +1,14 @@
+--- Simulation Started ---
+[Time 1000] Processing Rider 100 ... NO MATCH. Retrying in 5000ms...
+[Time 6000] Processing Rider 100 (Retry #1) ... NO MATCH. Retrying in 5000ms...
+[Time 11000] Processing Rider 100 (Retry #2) ... NO MATCH. Retrying in 5000ms...
+[Time 16000] Processing Rider 100 (Retry #3) ... NO MATCH. Max retries reached. Request Cancelled.
+
+========================================
+       SIMULATION REPORT CARD           
+========================================
+ Total Requests  : 1
+ Total Matches   : 0
+ Failed/Expired  : 1
+ Match Rate      : 0.0%
+========================================

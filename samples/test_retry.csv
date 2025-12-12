@@ -1,0 +1,5 @@
+driver,1,0.0,0.0,5.0
+# Rider 100 keeps driver busy for 6000ms (Trip=60 units, Speed=0.01)
+rider,100,0.0,0.0,60.0,0.0,0
+# Rider 101 requests at 1000ms. Driver busy. Retries at 6000ms. Success.
+rider,101,0.0,0.0,10.0,10.0,1000
