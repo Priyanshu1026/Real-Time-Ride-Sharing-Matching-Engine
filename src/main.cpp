@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     int total_matches = 0;
     int total_failed = 0; // New stat for final report
 
-    MatchingEngine engine(1.0, 50.0); // Increased radius for testing
+    MatchingEngine engine(1.0, 500.0); // Increased radius for testing
     std::priority_queue<Event, std::vector<Event>, std::greater<Event>> event_queue;
     
     // 1. LOAD EVENTS FROM FILE
@@ -125,16 +125,20 @@ int main(int argc, char* argv[]) {
             // --- Schedule driver to appear at REAL Dropoff (dx, dy) ---
             if (result.driver_id != -1) {
                 total_matches++;
-                //PHYSICS CALCULATION
-                // Dist = sqrt((dx-px)^2 + (dy-py)^2)
-                double dist = std::sqrt(std::pow(result.dropoff_x - result.pickup_x, 2) + 
-                                        std::pow(result.dropoff_y - result.pickup_y, 2));
-                // Duration = Dist / Speed
-                long long trip_duration = static_cast<long long>(dist / VEHICLE_SPEED);
-                // Ensure at least 1000ms trip
-                if (trip_duration < 1000) trip_duration = 1000;
+                // --- 1. Calculate Pickup Physics (Manhattan) ---
+                double pickup_dist = std::abs(result.driver_start_x - result.pickup_x) + 
+                                     std::abs(result.driver_start_y - result.pickup_y);
+                long long pickup_time = static_cast<long long>(pickup_dist / VEHICLE_SPEED);
+                // --- 2. Calculate Trip Physics (Manhattan) ---
+                double trip_dist = std::abs(result.dropoff_x - result.pickup_x) + 
+                                   std::abs(result.dropoff_y - result.pickup_y);
+                long long trip_time = static_cast<long long>(trip_dist / VEHICLE_SPEED);
+                // Total Busy Time
+                long long total_busy_time = pickup_time + trip_time;
+                if (total_busy_time < 1000) total_busy_time = 1000; // Min threshold
+                // Schedule Driver Free Event
                 event_queue.push({
-                    current_time + trip_duration, 
+                    current_time + total_busy_time, 
                     DRIVER_AVAILABLE_AGAIN, 
                     result.driver_id, 
                     result.dropoff_x, // Use the x returned by engine
@@ -151,9 +155,10 @@ int main(int argc, char* argv[]) {
                 match_msg << "MATCHED: Rider " << e.entity_id << " with Driver " << result.driver_id << "\n";
                 log(log_file, match_msg.str());
                 
+                // --- LOGGING THE PICKUP/TRIP BREAKDOWN ---
                 std::stringstream trip_msg;
-                trip_msg << "   -> Trip Distance: " << std::fixed << std::setprecision(1) << dist 
-                         << " units. Duration: " << trip_duration << "ms.\n";
+                trip_msg << "   -> Pickup: " << std::fixed << std::setprecision(1) << pickup_dist << " units (" << pickup_time << "ms). "
+                         << "Trip: " << trip_dist << " units (" << trip_time << "ms).\n";
                 log(log_file, trip_msg.str());
             } else {
                 // --- RETRY LOGIC ---

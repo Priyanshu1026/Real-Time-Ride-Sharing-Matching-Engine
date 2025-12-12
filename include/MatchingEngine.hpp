@@ -5,9 +5,12 @@
 #include <vector>
 #include <mutex>
 
-// Updated to include Pickup location (for distance calc)
 struct MatchResult {
     int driver_id;
+    // Driver's location at moment of match
+    double driver_start_x;
+    double driver_start_y;
+    // Trip info
     double pickup_x;
     double pickup_y;
     double dropoff_x;

@@ -66,14 +66,12 @@ void MatchingEngine::cancel_rider(Rider::id_t id) {
     riders.erase(id);
 }
 
-// ----------------------
-// Matching Logic
-// ----------------------
-
+// --- UPDATED: Manhattan Distance & New Struct ---
 MatchResult MatchingEngine::attempt_match_for_rider(Rider::id_t rider_id) {
     std::lock_guard<std::mutex> lock(mtx);
 
-    if (riders.find(rider_id) == riders.end()) return {-1, 0, 0};
+    // Initializer list format: {id, d_sx, d_sy, px, py, dx, dy}
+    if (riders.find(rider_id) == riders.end()) return {-1, 0, 0, 0, 0, 0, 0};
     Rider &r = riders[rider_id];
 
     auto nearby_driver_ids = search_nearby(r.px, r.py, max_radius);
@@ -86,7 +84,9 @@ MatchResult MatchingEngine::attempt_match_for_rider(Rider::id_t rider_id) {
         Driver &d = drivers[did];
         if (!d.available) continue;
 
-        double dist = std::sqrt(std::pow(d.x - r.px, 2) + std::pow(d.y - r.py, 2));
+        // MANHATTAN DISTANCE: |x1-x2| + |y1-y2|
+        double dist = std::abs(d.x - r.px) + std::abs(d.y - r.py);
+        
         double score = dist - (d.rating * 2.0); 
 
         if (score < best_score) {
@@ -99,7 +99,9 @@ MatchResult MatchingEngine::attempt_match_for_rider(Rider::id_t rider_id) {
     if (best_driver_id != -1) {
         drivers[best_driver_id].available = false;
         
-        // Save necessary info before erasing rider
+        // Capture all coordinates
+        double d_sx = drivers[best_driver_id].x;
+        double d_sy = drivers[best_driver_id].y;
         double px = r.px, py = r.py;
         double dx = r.dx, dy = r.dy;
         
@@ -108,17 +110,12 @@ MatchResult MatchingEngine::attempt_match_for_rider(Rider::id_t rider_id) {
         std::cout << "MATCHED: Rider " << rider_id << " with Driver " << best_driver_id 
                   << " (Dist: " << matched_dist << ", Rating: " << drivers[best_driver_id].rating << ")\n";
         
-        // Return ID + Pickup + Dropoff
-        return {best_driver_id, px, py, dx, dy};
+        return {best_driver_id, d_sx, d_sy, px, py, dx, dy};
     } else {
         std::cout << "NO MATCH found for Rider " << rider_id << "\n";
-        return {-1, 0, 0, 0, 0};
+        return {-1, 0, 0, 0, 0, 0, 0};
     }
 }
-
-// ----------------------
-// Private Helpers
-// ----------------------
 
 long long MatchingEngine::cell_key(double x, double y) const {
     long long cx = static_cast<long long>(std::floor(x / cell_size));
