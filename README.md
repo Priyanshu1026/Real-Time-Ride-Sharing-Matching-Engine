@@ -89,7 +89,8 @@ Summary: 3/3 Tests Passed.
 
 for both cases, we generate matches.log which stores output. for Option A, matches.log is in build folder, while in Option B, it is in root folder.
 
-sample report for benchmark
+sample report for debug version and cout-ing text for every match or fail or retry
+
 ========================================
        SIMULATION REPORT CARD           
 ========================================
@@ -97,6 +98,19 @@ sample report for benchmark
  Total Matches   : 16063
  Failed/Expired  : 83937
  Match Rate      : 16.1%
- Processing Time : 83222.7 ms
- Throughput      : 1201.6 req/sec
+ Processing Time : 483111.0 ms
+ Throughput      : 207.0 req/sec
+========================================
+
+
+sample report for release version(benchmark)
+========================================
+       SIMULATION REPORT CARD           
+========================================
+ Total Requests  : 100000
+ Total Matches   : 16063
+ Failed/Expired  : 83937
+ Match Rate      : 16.1%
+ Processing Time : 13701.2 ms
+ Throughput      : 7298.6 req/sec
 ========================================
