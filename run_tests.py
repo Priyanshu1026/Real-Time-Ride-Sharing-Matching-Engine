@@ -21,6 +21,11 @@ TEST_CASES = [
         "file": "samples/test_fail.csv",
         "name": "Impossible Match",
         "expected_rate": 0.0
+    },
+    {
+        "file": "samples/events_stress.csv",
+        "name": "Stress Test",
+        "expected_rate": None # We won't check exact rate for stress test
     }
 ]
 

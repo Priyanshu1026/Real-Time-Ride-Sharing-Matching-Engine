@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -15,10 +16,10 @@ const int MAX_RETRIES = 3;         // How many times to retry a failed request
 
 // Helper: Write to both Console and File
 void log(std::ofstream &file, const std::string &msg) {
-    std::cout << msg; // Show on screen
+    //commented for benchmarking std::cout << msg; // Show on screen
     if (file.is_open()) {
         file << msg;  // Save to file
-        file.flush(); // Ensure it saves immediately
+        //commented for benchmarking forces your computer to physically write to your hard drive/SSD immediately on every single event. Writing to a disk is thousands of times slower than doing math in RAM. Disable instant flushing. Let the OS batch-write to disk automatically! file.flush(); // Ensure it saves immediately
     }
 }
 
@@ -47,7 +48,7 @@ int main(int argc, char* argv[]) {
     int total_matches = 0;
     int total_failed = 0; // New stat for final report
 
-    MatchingEngine engine(1.0, 500.0); // Increased radius for testing
+    MatchingEngine engine(50.0, 100.0);
     std::priority_queue<Event, std::vector<Event>, std::greater<Event>> event_queue;
     
     // 1. LOAD EVENTS FROM FILE
@@ -100,12 +101,14 @@ int main(int argc, char* argv[]) {
     long long current_time = 0;
     log(log_file, "--- Simulation Started ---\n");
 
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     while (!event_queue.empty()) {
         Event e = event_queue.top();
         event_queue.pop();
 
         if (e.time > current_time) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(e.time - current_time));
+            //comment out for benchmark std::this_thread::sleep_for(std::chrono::milliseconds(e.time - current_time));
             current_time = e.time;
         }
 
@@ -189,6 +192,9 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    auto end_time = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = end_time - start_time;
+
     // 3. FINAL REPORT CARD
     std::stringstream report;
     report << "\n========================================\n";
@@ -200,8 +206,11 @@ int main(int argc, char* argv[]) {
     
     double match_rate = (total_riders > 0) ? (double(total_matches) / total_riders) * 100.0 : 0.0;
     report << " Match Rate      : " << std::fixed << std::setprecision(1) << match_rate << "%\n";
+    report << " Processing Time : " << duration.count() << " ms\n";
+    report << " Throughput      : " << (total_riders / (duration.count() / 1000.0)) << " req/sec\n";
     report << "========================================\n";
     // Now 'report' actually contains text, so this will write to BOTH console and file
     log(log_file, report.str());
+    std::cout << report.str();
     return 0;
 }

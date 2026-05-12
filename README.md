@@ -46,8 +46,9 @@ cd cpp-ride-matching-engine
 mkdir build && cd build
 
 # 3. Compile
-cmake ..
-cmake --build .
+cmake -S . -B build
+cmake --build build --config Debug 
+cmake --build build --config Release (for benchmark performance)
 
 # 4. Run Simulation
 
@@ -59,7 +60,8 @@ Run the executable directly and pass the path to any CSV file as an argument.
 *From the `build` directory:*
 
 # **Windows:**
-./Debug/ride_matching_simulator.exe ../samples/events.csv
+.\build\Debug\ride_matching_simulator.exe samples\events_stress.csv
+.\build\Release\ride_matching_simulator.exe samples\events_stress.csv (for benchmark performance)
 
 # **Linux/Mac:**
 ./ride_matching_simulator ../samples/events.csv
@@ -86,3 +88,15 @@ Summary: 3/3 Tests Passed.
 🎉 ALL SYSTEMS GO!
 
 for both cases, we generate matches.log which stores output. for Option A, matches.log is in build folder, while in Option B, it is in root folder.
+
+sample report for benchmark
+========================================
+       SIMULATION REPORT CARD           
+========================================
+ Total Requests  : 100000
+ Total Matches   : 16063
+ Failed/Expired  : 83937
+ Match Rate      : 16.1%
+ Processing Time : 83222.7 ms
+ Throughput      : 1201.6 req/sec
+========================================

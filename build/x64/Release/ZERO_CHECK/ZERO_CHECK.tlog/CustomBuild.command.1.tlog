@@ -1,0 +1,10 @@
+^C:\USERS\SAGAR\ONEDRIVE\DOCUMENTS\REAL-TIME-RIDE-SHARING-MATCHING-ENGINE\BUILD\CMAKEFILES\A494D94E4601AC0854ADCC919D1F0981\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/sagar/OneDrive/Documents/Real-Time-Ride-Sharing-Matching-Engine -BC:/Users/sagar/OneDrive/Documents/Real-Time-Ride-Sharing-Matching-Engine/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/sagar/OneDrive/Documents/Real-Time-Ride-Sharing-Matching-Engine/build/ride_matching_engine.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

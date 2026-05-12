@@ -107,12 +107,12 @@ MatchResult MatchingEngine::attempt_match_for_rider(Rider::id_t rider_id) {
         
         riders.erase(rider_id);
         
-        std::cout << "MATCHED: Rider " << rider_id << " with Driver " << best_driver_id 
-                  << " (Dist: " << matched_dist << ", Rating: " << drivers[best_driver_id].rating << ")\n";
+        //commented for benchmarking  std::cout << "MATCHED: Rider " << rider_id << " with Driver " << best_driver_id 
+        //           << " (Dist: " << matched_dist << ", Rating: " << drivers[best_driver_id].rating << ")\n";
         
         return {best_driver_id, d_sx, d_sy, px, py, dx, dy};
     } else {
-        std::cout << "NO MATCH found for Rider " << rider_id << "\n";
+        // commented for benchmarking std::cout << "NO MATCH found for Rider " << rider_id << "\n";
         return {-1, 0, 0, 0, 0, 0, 0};
     }
 }
